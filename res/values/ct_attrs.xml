@@ -7,8 +7,10 @@
         <attr name="rimThickness" format="dimension" />
         <attr name="rimInnerShadow" format="boolean" />
         <attr name="showMinutes" format="boolean" />
-        <attr name="showHours" format="boolean" />
         <attr name="timeInSeconds" format="integer" />
+        <attr name="timeMinuteColor" format="color" />
+        <attr name="timeSecondColor" format="color" />
+        <attr name="timeUnitsTextColor" format="color" />
     </declare-styleable>
 
 </resources>

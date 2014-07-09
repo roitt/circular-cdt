@@ -14,11 +14,14 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
-        app:rimDefaultColor="#AEF7F7F7"
-        app:rimFillColor="#AFBFFF00"
+        app:rimDefaultColor="#EEF7F7F7"
+        app:rimFillColor="#EEBFFF00"
         app:rimInnerShadow="true"
-        app:rimThickness="5dp"
-        app:showHours="true"
-        app:showMinutes="true" />
+        app:rimThickness="20dp"
+        app:showMinutes="true"
+        app:timeInSeconds="3684"
+        app:timeMinuteColor="#EEBAFF0A"
+        app:timeSecondColor="#EEBAFF0A"
+        app:timeUnitsTextColor="#AEAEAEAE" />
 
 </RelativeLayout>
