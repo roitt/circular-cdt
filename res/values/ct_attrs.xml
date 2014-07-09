@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CircularTimer">
+        <attr name="rimDefaultColor" format="color" />
+        <attr name="rimFillColor" format="color" />
+        <attr name="rimThickness" format="dimension" />
+        <attr name="rimInnerShadow" format="boolean" />
+        <attr name="showMinutes" format="boolean" />
+        <attr name="showHours" format="boolean" />
+    </declare-styleable>
+
+</resources>
