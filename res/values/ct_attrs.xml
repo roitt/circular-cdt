@@ -8,6 +8,7 @@
         <attr name="rimInnerShadow" format="boolean" />
         <attr name="showMinutes" format="boolean" />
         <attr name="showHours" format="boolean" />
+        <attr name="timeInSeconds" format="integer" />
     </declare-styleable>
 
 </resources>

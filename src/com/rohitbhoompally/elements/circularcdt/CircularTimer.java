@@ -18,6 +18,7 @@ public class CircularTimer extends View {
 	private boolean showMinutes = false;
 	private boolean showHours = false;
 	private boolean rimInnerShadow = false;
+	private int timeInSeconds = 60;
 
 	/**
 	 * @param context
@@ -36,8 +37,18 @@ public class CircularTimer extends View {
 					R.styleable.CircularTimer);
 			rimThickness = (int) typedArray.getDimension(
 					R.styleable.CircularTimer_rimThickness, rimThickness);
-			rimDefaultColor = (int) typedArray.getDimension(
+			rimDefaultColor = (int) typedArray.getColor(
 					R.styleable.CircularTimer_rimDefaultColor, rimDefaultColor);
+			rimFillColor = (int) typedArray.getColor(
+					R.styleable.CircularTimer_rimFillColor, rimFillColor);
+			rimInnerShadow = (boolean) typedArray.getBoolean(
+					R.styleable.CircularTimer_rimInnerShadow, rimInnerShadow);
+			showHours = (boolean) typedArray.getBoolean(
+					R.styleable.CircularTimer_showHours, showHours);
+			showMinutes = (boolean) typedArray.getBoolean(
+					R.styleable.CircularTimer_showMinutes, showMinutes);
+			timeInSeconds = (int) typedArray.getInt(
+					R.styleable.CircularTimer_timeInSeconds, timeInSeconds);
 			typedArray.recycle();
 		}
 	}
