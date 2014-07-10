@@ -4,10 +4,14 @@
  */
 package com.rohitbhoompally.elements.circularcdt;
 
+import java.lang.Character.UnicodeBlock;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -46,6 +50,8 @@ public class CircularTimer extends View {
 	private RectF rimRect = new RectF();
 	private RectF circleRect = new RectF();
 	private RectF innerRect = new RectF();
+	private RectF minutesRect = new RectF();
+	private RectF secondsRect = new RectF();
 
 	/**
 	 * @param context
@@ -135,16 +141,47 @@ public class CircularTimer extends View {
 				+ rimThickness, width - paddingRight - rimThickness, height
 				- paddingBottom - rimThickness);
 
-		// We need this value to added time text.
-		innerRect = new RectF(paddingLeft + (3 * rimThickness), paddingTop
-				+ (3 * rimThickness),
-				width - paddingRight - (3 * rimThickness), height
-						- paddingBottom - (3 * rimThickness));
+		// We need this value to add time text. Get the value of this rect
+		// from circle rect's position. This is simple math for inscribing a
+		// square inside a circle.
+		float circleDiameter = circleRect.width() - rimThickness;
+		float circleRadius = (float) (circleDiameter / (2.0f * Math.sqrt(2)));
+		float insRectLeft = circleRect.centerX() - circleRadius;
+		float insRectTop = circleRect.centerY() - circleRadius;
+		float insRectRight = circleRect.centerX() + circleRadius;
+		float insRectBottom = circleRect.centerY() + circleRadius;
+		innerRect = new RectF(insRectLeft, insRectTop, insRectRight,
+				insRectBottom);
+
+		// minutesRect is the component which holds the text for minutes in the
+		// CDT. We allocate 60% of innerRect's available width to this rect.
+		float innerRectWidth = innerRect.right - innerRect.left;
+		float minutesRectRight = 0.58f * innerRectWidth;
+		minutesRect = new RectF(innerRect.left, innerRect.top, innerRect.left
+				+ minutesRectRight, innerRect.right);
+
+		// secondsRect is the component which holds the text for seconds in the
+		// CDT. We allocate the remaining 40% of innerRect's space to this rect.
+		float minutesRectLeft = 0.6f * innerRectWidth;
+		secondsRect = new RectF(innerRect.left + minutesRectLeft,
+				innerRect.top, innerRect.right, innerRect.bottom);
+
+		// // Make this rect take the left half of available space
+		// int centerOffset = (int) rimRect.centerX();
+		// minutesRect = new RectF(innerRect.left, innerRect.top,
+		// centerOffset - 2, innerRect.bottom);
+		//
+		// // Make this rect take the right half of available space, and
+		// restrict
+		// // the height to 3/4 of available height
+		// int restrictedTop = (int) (innerRect.top + (innerRect.bottom / 5));
+		// secondsRect = new RectF(centerOffset + 2, restrictedTop,
+		// innerRect.right, innerRect.bottom);
 
 		// setup paints of the component
 		rimDefaultPaint.setColor(rimDefaultColor);
 		rimDefaultPaint.setAntiAlias(true);
-		rimDefaultPaint.setStyle(Style.STROKE);
+		rimDefaultPaint.setStyle(Style.FILL); // Change this later
 		rimDefaultPaint.setStrokeWidth(rimThickness);
 
 		rimFillPaint.setColor(rimFillColor);
@@ -154,11 +191,13 @@ public class CircularTimer extends View {
 
 		timeUnitPaint.setColor(timeUnitsTextColor);
 		timeUnitPaint.setStyle(Style.FILL);
+		timeUnitPaint.setTextAlign(Align.CENTER);
 		timeUnitPaint.setAntiAlias(true);
 		timeUnitPaint.setTextSize(12);
 
 		timeMinutePaint.setColor(timeMinuteColor);
 		timeMinutePaint.setStyle(Style.FILL);
+		timeMinutePaint.setTextAlign(Align.CENTER);
 		timeMinutePaint.setAntiAlias(true);
 
 		timeSecondPaint.setColor(timeSecondColor);
@@ -166,22 +205,39 @@ public class CircularTimer extends View {
 		timeSecondPaint.setAntiAlias(true);
 
 		if (showMinutes) {
-			timeMinutePaint.setTextSize(28);
+			timeMinutePaint.setTextSize(minutesRect.bottom - minutesRect.top);
 			timeSecondPaint.setTextSize(16);
 		}
 	}
 
 	protected void onDraw(Canvas canvas) {
+
+		canvas.drawRect(minutesRect, timeUnitPaint);
+
+		canvas.drawRect(secondsRect, timeUnitPaint);
+
 		// Draw the inner circle
 		canvas.drawArc(circleRect, 360, 360, false, rimDefaultPaint);
 
 		// Draw the bar
-		canvas.drawArc(circleRect, 180, 270, false, rimFillPaint);
+		canvas.drawArc(circleRect, 360, 360, false, rimFillPaint);
 
-		// If hours should be shown we need 3 compartments
-		if (showMinutes) {
-			canvas.drawText(minutes, innerRect.top, innerRect.left,
-					timeUnitPaint);
-		}
+		// // Get heights of the texts
+		// int minuteUnitTextHeight = (int) (timeUnitPaint.ascent() -
+		// timeUnitPaint
+		// .descent());
+		//
+		// // If hours should be shown we need 3 compartments
+		// if (showMinutes) {
+		// // canvas.drawText(seconds, minutesRect.top, minutesRect.left,
+		// // timeUnitPaint);
+		// canvas.drawText(minutes, minutesRect.centerX(), minutesRect.bottom,
+		// timeUnitPaint);
+		// String m = "59";
+		// if (m.length() > 1)
+		// timeMinutePaint.setTextSize(timeMinutePaint.getTextSize() / 2);
+		// canvas.drawText(m, minutesRect.centerX(), minutesRect.bottom
+		// + minuteUnitTextHeight, timeMinutePaint);
+		// }
 	}
 }

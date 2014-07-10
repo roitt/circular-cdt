@@ -17,7 +17,7 @@
         app:rimDefaultColor="#EEF7F7F7"
         app:rimFillColor="#EEBFFF00"
         app:rimInnerShadow="true"
-        app:rimThickness="20dp"
+        app:rimThickness="10dp"
         app:showMinutes="true"
         app:timeInSeconds="3684"
         app:timeMinuteColor="#EEBAFF0A"
