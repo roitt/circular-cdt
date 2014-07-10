@@ -4,16 +4,16 @@
  */
 package com.rohitbhoompally.elements.circularcdt;
 
-import java.lang.Character.UnicodeBlock;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.os.CountDownTimer;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,13 +30,22 @@ public class CircularTimer extends View {
 	private int timeUnitsTextColor = 0xAEAEAEAE;
 	private boolean showMinutes = false;
 	private boolean rimInnerShadow = false;
-	private int timeInSeconds = 60;
 	private int paddingTop = 5;
 	private int paddingBottom = 5;
 	private int paddingLeft = 5;
 	private int paddingRight = 5;
 	private static String minutes = "Minutes";
 	private static String seconds = "Seconds";
+	private final float maxTextSize = 200;
+	private final float minTextSize = 12;
+
+	// Countdowntimer variables
+	private CountDownTimer cdt;
+	private boolean timerHasStarted = false;
+	private long startTime = 120;
+	private long interval = 1;
+	long startTimeinMillis = startTime * 1000;
+	long intervalInMillis = interval * 1000;
 
 	// Paints
 	private Paint rimDefaultPaint = new Paint();
@@ -53,6 +62,26 @@ public class CircularTimer extends View {
 	private RectF minutesRect = new RectF();
 	private RectF secondsRect = new RectF();
 
+	// Countdowntimer class implementation
+	public class CDT extends CountDownTimer {
+		public CDT(long startTime, long interval) {
+			super(startTime, interval);
+		}
+
+		@Override
+		public void onFinish() {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {
+			// TODO Auto-generated method stub
+			startTimeinMillis = millisUntilFinished;
+			invalidate();
+		}
+	}
+
 	/**
 	 * @param context
 	 * @param attrs
@@ -61,6 +90,11 @@ public class CircularTimer extends View {
 		super(_context, _attrs);
 		// TODO Auto-generated constructor stub
 		init(_context, _attrs);
+
+		// Get time in millis
+		startTimeinMillis = startTime * 1000;
+		intervalInMillis = interval * 1000;
+		cdt = new CDT(startTimeinMillis, intervalInMillis);
 	}
 
 	public void init(Context _context, AttributeSet _attrs) {
@@ -78,11 +112,19 @@ public class CircularTimer extends View {
 					R.styleable.CircularTimer_rimInnerShadow, rimInnerShadow);
 			showMinutes = (boolean) typedArray.getBoolean(
 					R.styleable.CircularTimer_showMinutes, showMinutes);
-			timeInSeconds = (int) typedArray.getInt(
-					R.styleable.CircularTimer_timeInSeconds, timeInSeconds);
 			timeUnitsTextColor = (int) typedArray.getColor(
 					R.styleable.CircularTimer_timeUnitsTextColor,
 					timeUnitsTextColor);
+			interval = (long) typedArray.getFloat(
+					R.styleable.CircularTimer_intervalInSeconds, interval);
+			startTime = (long) typedArray.getFloat(
+					R.styleable.CircularTimer_timeInSeconds, startTime);
+
+			// Beta: Ensuring we only support minutes and seconds.
+			// TODO extend the functionality to support hours.
+			if (startTime > 3600)
+				startTime = 3600;
+
 			typedArray.recycle();
 		}
 	}
@@ -116,6 +158,7 @@ public class CircularTimer extends View {
 
 		setUpBackground();
 		invalidate();
+		cdt.start();
 	}
 
 	private void setUpBackground() {
@@ -166,18 +209,6 @@ public class CircularTimer extends View {
 		secondsRect = new RectF(innerRect.left + minutesRectLeft,
 				innerRect.top, innerRect.right, innerRect.bottom);
 
-		// // Make this rect take the left half of available space
-		// int centerOffset = (int) rimRect.centerX();
-		// minutesRect = new RectF(innerRect.left, innerRect.top,
-		// centerOffset - 2, innerRect.bottom);
-		//
-		// // Make this rect take the right half of available space, and
-		// restrict
-		// // the height to 3/4 of available height
-		// int restrictedTop = (int) (innerRect.top + (innerRect.bottom / 5));
-		// secondsRect = new RectF(centerOffset + 2, restrictedTop,
-		// innerRect.right, innerRect.bottom);
-
 		// setup paints of the component
 		rimDefaultPaint.setColor(rimDefaultColor);
 		rimDefaultPaint.setAntiAlias(true);
@@ -193,7 +224,8 @@ public class CircularTimer extends View {
 		timeUnitPaint.setStyle(Style.FILL);
 		timeUnitPaint.setTextAlign(Align.CENTER);
 		timeUnitPaint.setAntiAlias(true);
-		timeUnitPaint.setTextSize(12);
+		timeUnitPaint
+				.setTextSize(getValidatedTextSize(minutesRect.width() / 7));
 
 		timeMinutePaint.setColor(timeMinuteColor);
 		timeMinutePaint.setStyle(Style.FILL);
@@ -202,19 +234,18 @@ public class CircularTimer extends View {
 
 		timeSecondPaint.setColor(timeSecondColor);
 		timeSecondPaint.setStyle(Style.FILL);
+		timeSecondPaint.setTextAlign(Align.CENTER);
 		timeSecondPaint.setAntiAlias(true);
 
 		if (showMinutes) {
-			timeMinutePaint.setTextSize(minutesRect.bottom - minutesRect.top);
-			timeSecondPaint.setTextSize(16);
+			timeMinutePaint.setTextSize(getValidatedTextSize(minutesRect
+					.width() * 0.9f));
+			timeSecondPaint.setTextSize(getValidatedTextSize(secondsRect
+					.width() * 0.7f));
 		}
 	}
 
 	protected void onDraw(Canvas canvas) {
-
-		canvas.drawRect(minutesRect, timeUnitPaint);
-
-		canvas.drawRect(secondsRect, timeUnitPaint);
 
 		// Draw the inner circle
 		canvas.drawArc(circleRect, 360, 360, false, rimDefaultPaint);
@@ -222,22 +253,39 @@ public class CircularTimer extends View {
 		// Draw the bar
 		canvas.drawArc(circleRect, 360, 360, false, rimFillPaint);
 
-		// // Get heights of the texts
-		// int minuteUnitTextHeight = (int) (timeUnitPaint.ascent() -
-		// timeUnitPaint
-		// .descent());
-		//
-		// // If hours should be shown we need 3 compartments
-		// if (showMinutes) {
-		// // canvas.drawText(seconds, minutesRect.top, minutesRect.left,
-		// // timeUnitPaint);
-		// canvas.drawText(minutes, minutesRect.centerX(), minutesRect.bottom,
-		// timeUnitPaint);
-		// String m = "59";
-		// if (m.length() > 1)
-		// timeMinutePaint.setTextSize(timeMinutePaint.getTextSize() / 2);
-		// canvas.drawText(m, minutesRect.centerX(), minutesRect.bottom
-		// + minuteUnitTextHeight, timeMinutePaint);
-		// }
+		// Draw the minutes and seconds text, and try to center it in the
+		// available rect space vertically.
+		float verticalBasePosition = minutesRect.centerY()
+				+ ((timeMinutePaint.getTextSize()) / 2.0f);
+		canvas.drawText(String.valueOf(TimeUnit.MILLISECONDS
+				.toSeconds(startTimeinMillis)
+				- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+						.toMinutes(startTimeinMillis))), secondsRect.centerX(),
+				verticalBasePosition, timeSecondPaint);
+
+		canvas.drawText(String.valueOf(TimeUnit.MILLISECONDS
+				.toMinutes(startTimeinMillis)), minutesRect.centerX(),
+				verticalBasePosition, timeMinutePaint);
+
+		// Positioning the units on top of minutes and seconds.
+		float minutesUnitsBasePosition = verticalBasePosition
+				- timeMinutePaint.getTextSize();
+
+		float secondsUnitsBasePosition = verticalBasePosition
+				- (timeSecondPaint.getTextSize());
+
+		canvas.drawText(minutes, minutesRect.centerX(),
+				minutesUnitsBasePosition, timeUnitPaint);
+		canvas.drawText(seconds, secondsRect.centerX(),
+				secondsUnitsBasePosition, timeUnitPaint);
+	}
+
+	private float getValidatedTextSize(float textSize) {
+		if (textSize > maxTextSize)
+			textSize = maxTextSize;
+		if (textSize < minTextSize)
+			textSize = minTextSize;
+
+		return textSize;
 	}
 }
