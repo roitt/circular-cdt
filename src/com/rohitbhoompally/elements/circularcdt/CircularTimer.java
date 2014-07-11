@@ -31,6 +31,7 @@ public class CircularTimer extends View {
 	private int timeSecondColor = 0xEEBAFF0A;
 	private int timeUnitsTextColor = 0xAEAEAEAE;
 	private int shadowColor = 0xEED3D3D3;
+	private int timerEndedColor = 0xA0E50000;
 	private boolean showMinutes = false;
 	private boolean rimInnerShadow = false;
 	private int paddingTop = 5;
@@ -41,16 +42,17 @@ public class CircularTimer extends View {
 	private static String seconds = "Seconds";
 	private final float maxTextSize = 200;
 	private final float minTextSize = 12;
+	private String onTimerEndedText = "";
 
 	// Countdowntimer variables
 	private CountDownTimer cdt;
-	private boolean timerHasStarted = false;
 	private long startTime = 120;
 	private long interval = 1;
 	long startTimeinMillis = startTime * 1000;
 	long intervalInMillis = interval * 1000;
 	private final int degrees = 360;
 	private float anglePerSecond = 1;
+	private boolean hasTimerEnded = false;
 
 	// Dynamics
 	private boolean dialInitialized = false;
@@ -68,6 +70,8 @@ public class CircularTimer extends View {
 	private Paint timeMinutePaint = new Paint();
 	private Paint timeSecondPaint = new Paint();
 	private Paint timeUnitPaint = new Paint();
+	private Paint timerEndedCirclePaint = new Paint();
+	private Paint timerEndedTextPaint = new Paint();
 
 	// Rectangles
 	@SuppressWarnings("unused")
@@ -88,6 +92,8 @@ public class CircularTimer extends View {
 			// TODO Auto-generated method stub
 			startTimeinMillis = 0;
 			targetValue = targetValue - anglePerSecond;
+			invalidate();
+			hasTimerEnded = true;
 			invalidate();
 		}
 
@@ -164,6 +170,8 @@ public class CircularTimer extends View {
 					timeUnitsTextColor);
 			interval = (long) typedArray.getFloat(
 					R.styleable.CircularTimer_intervalInSeconds, interval);
+			onTimerEndedText = (String) typedArray
+					.getString(R.styleable.CircularTimer_onTimerEndedText);
 			startTime = (long) typedArray.getFloat(
 					R.styleable.CircularTimer_timeInSeconds, startTime);
 
@@ -297,6 +305,16 @@ public class CircularTimer extends View {
 			timeSecondPaint.setTextSize(getValidatedTextSize(secondsRect
 					.width() * 0.7f));
 		}
+
+		timerEndedCirclePaint.setColor(timerEndedColor);
+		timerEndedCirclePaint.setStyle(Style.FILL);
+		timerEndedCirclePaint.setTextAlign(Align.CENTER);
+		timerEndedCirclePaint.setAntiAlias(true);
+
+		timerEndedTextPaint.setColor(rimDefaultColor);
+		timerEndedTextPaint.setStyle(Style.FILL);
+		timerEndedTextPaint.setTextAlign(Align.CENTER);
+		timerEndedTextPaint.setAntiAlias(true);
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -309,11 +327,10 @@ public class CircularTimer extends View {
 
 		// This method handles drawing the circle, and its fills, and showing
 		// minutes and seconds text inside.
-		if (startTimeinMillis > 0)
+		if (!hasTimerEnded)
 			drawWorkingTimer(canvas);
 		else
 			drawFinishedTimer(canvas);
-
 	}
 
 	private void drawWorkingTimer(Canvas canvas) {
@@ -346,7 +363,7 @@ public class CircularTimer extends View {
 	}
 
 	private void drawFinishedTimer(Canvas canvas) {
-
+		canvas.drawArc(circleRect, 0, 360, false, timerEndedCirclePaint);
 	}
 
 	private float getValidatedTextSize(float textSize) {

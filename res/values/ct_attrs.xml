@@ -12,6 +12,7 @@
         <attr name="timeMinuteColor" format="color" />
         <attr name="timeSecondColor" format="color" />
         <attr name="timeUnitsTextColor" format="color" />
+        <attr name="onTimerEndedText" format="string" />
     </declare-styleable>
 
 </resources>
