@@ -13,7 +13,9 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -46,6 +48,18 @@ public class CircularTimer extends View {
 	private long interval = 1;
 	long startTimeinMillis = startTime * 1000;
 	long intervalInMillis = interval * 1000;
+	private final int degrees = 360;
+	private float anglePerSecond = 1;
+
+	// Dynamics
+	private boolean dialInitialized = false;
+	private float currentValue = 360;
+	private float targetValue = 360;
+	private float fillVelocity = 0.0f;
+	private float fillAcceleration = 0.0f;
+	private long lastMoveTime = -1L;
+
+	private float actualReading = 90;
 
 	// Paints
 	private Paint rimDefaultPaint = new Paint();
@@ -71,15 +85,46 @@ public class CircularTimer extends View {
 		@Override
 		public void onFinish() {
 			// TODO Auto-generated method stub
-
+			targetValue = targetValue - anglePerSecond;
+			invalidate();
 		}
 
 		@Override
 		public void onTick(long millisUntilFinished) {
 			// TODO Auto-generated method stub
 			startTimeinMillis = millisUntilFinished;
+			targetValue = targetValue - anglePerSecond;
 			invalidate();
 		}
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		Bundle bundle = (Bundle) state;
+		Parcelable superState = bundle.getParcelable("superState");
+		super.onRestoreInstanceState(superState);
+
+		dialInitialized = bundle.getBoolean("dialInitialized");
+		currentValue = bundle.getFloat("currentValue");
+		targetValue = bundle.getFloat("targetValue");
+		fillVelocity = bundle.getFloat("fillVelocity");
+		fillAcceleration = bundle.getFloat("fillAcceleration");
+		lastMoveTime = bundle.getLong("lastMoveTime");
+	}
+
+	@Override
+	protected Parcelable onSaveInstanceState() {
+		Parcelable superState = super.onSaveInstanceState();
+
+		Bundle state = new Bundle();
+		state.putParcelable("superState", superState);
+		state.putBoolean("dialInitialized", dialInitialized);
+		state.putFloat("currentValue", currentValue);
+		state.putFloat("targetValue", targetValue);
+		state.putFloat("fillVelocity", fillVelocity);
+		state.putFloat("fillAcceleration", fillAcceleration);
+		state.putLong("lastMoveTime", lastMoveTime);
+		return state;
 	}
 
 	/**
@@ -125,6 +170,9 @@ public class CircularTimer extends View {
 			if (startTime > 3600)
 				startTime = 3600;
 
+			// Calculating angle per second
+			anglePerSecond = degrees / startTime;
+
 			typedArray.recycle();
 		}
 	}
@@ -158,7 +206,6 @@ public class CircularTimer extends View {
 
 		setUpBackground();
 		invalidate();
-		cdt.start();
 	}
 
 	private void setUpBackground() {
@@ -212,7 +259,7 @@ public class CircularTimer extends View {
 		// setup paints of the component
 		rimDefaultPaint.setColor(rimDefaultColor);
 		rimDefaultPaint.setAntiAlias(true);
-		rimDefaultPaint.setStyle(Style.FILL); // Change this later
+		rimDefaultPaint.setStyle(Style.STROKE); // Change this later
 		rimDefaultPaint.setStrokeWidth(rimThickness);
 
 		rimFillPaint.setColor(rimFillColor);
@@ -251,7 +298,7 @@ public class CircularTimer extends View {
 		canvas.drawArc(circleRect, 360, 360, false, rimDefaultPaint);
 
 		// Draw the bar
-		canvas.drawArc(circleRect, 360, 360, false, rimFillPaint);
+		canvas.drawArc(circleRect, 90, targetValue, false, rimFillPaint);
 
 		// Draw the minutes and seconds text, and try to center it in the
 		// available rect space vertically.
@@ -287,5 +334,13 @@ public class CircularTimer extends View {
 			textSize = minTextSize;
 
 		return textSize;
+	}
+
+	public void startTimer() {
+		cdt.start();
+	}
+
+	public void stopTimer() {
+		cdt.cancel();
 	}
 }

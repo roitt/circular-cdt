@@ -20,9 +20,17 @@
         app:rimInnerShadow="true"
         app:rimThickness="10dp"
         app:showMinutes="true"
-        app:timeInSeconds="3684"
+        app:timeInSeconds="5"
         app:timeMinuteColor="#EEBAFF0A"
         app:timeSecondColor="#EEBAFF0A"
         app:timeUnitsTextColor="#AEAEAEAE" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name" />
 
 </RelativeLayout>
