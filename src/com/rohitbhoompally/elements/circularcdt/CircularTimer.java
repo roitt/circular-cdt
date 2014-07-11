@@ -30,6 +30,7 @@ public class CircularTimer extends View {
 	private int timeMinuteColor = 0xEEBAFF0A;
 	private int timeSecondColor = 0xEEBAFF0A;
 	private int timeUnitsTextColor = 0xAEAEAEAE;
+	private int shadowColor = 0xEED3D3D3;
 	private boolean showMinutes = false;
 	private boolean rimInnerShadow = false;
 	private int paddingTop = 5;
@@ -205,6 +206,7 @@ public class CircularTimer extends View {
 		layout_width = w;
 		layout_height = h;
 
+		this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		setUpBackground();
 		invalidate();
 	}
@@ -263,6 +265,10 @@ public class CircularTimer extends View {
 		rimDefaultPaint.setStyle(Style.STROKE); // Change this later
 		rimDefaultPaint.setStrokeWidth(rimThickness);
 
+		// Set the inner shadow for the circle, if asked for
+		if (rimInnerShadow)
+			rimDefaultPaint.setShadowLayer(20.0f, 1.0f, 1.0f, timeMinuteColor);
+
 		rimFillPaint.setColor(rimFillColor);
 		rimFillPaint.setAntiAlias(true);
 		rimFillPaint.setStyle(Style.STROKE);
@@ -301,6 +307,16 @@ public class CircularTimer extends View {
 		// Draw the bar
 		canvas.drawArc(circleRect, 90, targetValue, false, rimFillPaint);
 
+		// This method handles drawing the circle, and its fills, and showing
+		// minutes and seconds text inside.
+		if (startTimeinMillis > 0)
+			drawWorkingTimer(canvas);
+		else
+			drawFinishedTimer(canvas);
+
+	}
+
+	private void drawWorkingTimer(Canvas canvas) {
 		// Draw the minutes and seconds text, and try to center it in the
 		// available rect space vertically.
 		float verticalBasePosition = minutesRect.centerY()
@@ -327,6 +343,10 @@ public class CircularTimer extends View {
 				minutesUnitsBasePosition, timeUnitPaint);
 		canvas.drawText(seconds, secondsRect.centerX(),
 				secondsUnitsBasePosition, timeUnitPaint);
+	}
+
+	private void drawFinishedTimer(Canvas canvas) {
+
 	}
 
 	private float getValidatedTextSize(float textSize) {
