@@ -315,6 +315,9 @@ public class CircularTimer extends View {
 		timerEndedTextPaint.setStyle(Style.FILL);
 		timerEndedTextPaint.setTextAlign(Align.CENTER);
 		timerEndedTextPaint.setAntiAlias(true);
+		timerEndedTextPaint.setTextSize(getValidatedTextSize(circleRect.width()
+				/ onTimerEndedText.length()));
+		timerEndedTextPaint.setShadowLayer(5.0f, 2.0f, 2.0f, shadowColor);
 	}
 
 	protected void onDraw(Canvas canvas) {
@@ -364,6 +367,12 @@ public class CircularTimer extends View {
 
 	private void drawFinishedTimer(Canvas canvas) {
 		canvas.drawArc(circleRect, 0, 360, false, timerEndedCirclePaint);
+
+		// Centering the text relative to the circle.
+		float xCenter = circleRect.centerX();
+		float yCenter = circleRect.centerY()
+				+ (timerEndedCirclePaint.getTextSize() / 2);
+		canvas.drawText(onTimerEndedText, xCenter, yCenter, timerEndedTextPaint);
 	}
 
 	private float getValidatedTextSize(float textSize) {
