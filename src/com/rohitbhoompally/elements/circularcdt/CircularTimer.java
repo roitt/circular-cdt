@@ -267,7 +267,7 @@ public class CircularTimer extends View {
 
 		// Set the inner shadow for the circle, if asked for
 		if (rimInnerShadow)
-			rimDefaultPaint.setShadowLayer(20.0f, 1.0f, 1.0f, timeMinuteColor);
+			rimDefaultPaint.setShadowLayer(10.0f, 5.0f, 5.0f, shadowColor);
 
 		rimFillPaint.setColor(rimFillColor);
 		rimFillPaint.setAntiAlias(true);
