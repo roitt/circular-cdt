@@ -85,6 +85,7 @@ public class CircularTimer extends View {
 		@Override
 		public void onFinish() {
 			// TODO Auto-generated method stub
+			startTimeinMillis = 0;
 			targetValue = targetValue - anglePerSecond;
 			invalidate();
 		}
@@ -304,6 +305,7 @@ public class CircularTimer extends View {
 		// available rect space vertically.
 		float verticalBasePosition = minutesRect.centerY()
 				+ ((timeMinutePaint.getTextSize()) / 2.0f);
+
 		canvas.drawText(String.valueOf(TimeUnit.MILLISECONDS
 				.toSeconds(startTimeinMillis)
 				- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
