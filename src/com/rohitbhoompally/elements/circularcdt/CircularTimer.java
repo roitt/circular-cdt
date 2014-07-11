@@ -118,6 +118,7 @@ public class CircularTimer extends View {
 		fillVelocity = bundle.getFloat("fillVelocity");
 		fillAcceleration = bundle.getFloat("fillAcceleration");
 		lastMoveTime = bundle.getLong("lastMoveTime");
+		startTimeinMillis = bundle.getLong("startTimeInMillis");
 	}
 
 	@Override
@@ -132,6 +133,7 @@ public class CircularTimer extends View {
 		state.putFloat("fillVelocity", fillVelocity);
 		state.putFloat("fillAcceleration", fillAcceleration);
 		state.putLong("lastMoveTime", lastMoveTime);
+		state.putLong("startTimeInMillis", startTimeinMillis);
 		return state;
 	}
 
