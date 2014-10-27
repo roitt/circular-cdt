@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/lib/com.rohitbhoompally.elements.circularcdt"
+    xmlns:app="http://schemas.android.com/apk/res/com.rohitbhoompally.elements.cdtdemo"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,15 +15,15 @@
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         app:intervalInSeconds="1"
-        app:onTimerEndedText="Cancel"
+        app:onTimerEndedText="Done"
         app:rimDefaultColor="#EEF7F7F7"
         app:rimFillColor="#EEBFFF00"
         app:rimInnerShadow="true"
         app:rimThickness="10dp"
         app:showMinutes="true"
         app:timeInSeconds="5"
-        app:timeMinuteColor="#EEBAFF0A"
-        app:timeSecondColor="#EEBAFF0A"
+        app:timeMinuteColor="#FFBAFF0A"
+        app:timeSecondColor="#FFBAFF0A"
         app:timeUnitsTextColor="#AEAEAEAE" />
 
     <LinearLayout
@@ -74,6 +74,7 @@
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:text="@string/start" />
 
 </RelativeLayout>

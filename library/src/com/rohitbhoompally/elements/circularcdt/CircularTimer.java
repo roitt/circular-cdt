@@ -317,7 +317,8 @@ public class CircularTimer extends View {
 		timerEndedTextPaint.setStyle(Style.FILL);
 		timerEndedTextPaint.setTextAlign(Align.CENTER);
 		timerEndedTextPaint.setAntiAlias(true);
-		timerEndedTextPaint.setTextSize(50);
+		timerEndedTextPaint.setTextSize(getValidatedTextSize(circleRect.width()
+				/ onTimerEndedText.length()));
 		timerEndedTextPaint.setShadowLayer(5.0f, 2.0f, 2.0f, shadowColor);
 	}
 
