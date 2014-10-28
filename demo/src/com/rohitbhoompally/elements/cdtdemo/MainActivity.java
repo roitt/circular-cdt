@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.rohitbhoompally.elements.circularcdt.CircularTimer;
 
@@ -17,13 +18,22 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ct = (CircularTimer) findViewById(R.id.c_timer);
-		Button btn = (Button) findViewById(R.id.start);
+		final Button btn = (Button) findViewById(R.id.start);
+		final LinearLayout btnWrapper = (LinearLayout) findViewById(R.id.btn_wrapper);
+		Button pauseBtn = (Button) findViewById(R.id.pause);
+		Button resumeBtn = (Button) findViewById(R.id.resume);
+		Button stopBtn = (Button) findViewById(R.id.stop);
+		Button resetBtn = (Button) findViewById(R.id.reset);
 		btn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				ct.startTimer();
+
+				// Hide start button
+				btn.setVisibility(View.GONE);
+				btnWrapper.setVisibility(View.VISIBLE);
 			}
 		});
 	}
