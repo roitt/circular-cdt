@@ -62,8 +62,6 @@ public class CircularTimer extends View {
 	private float fillAcceleration = 0.0f;
 	private long lastMoveTime = -1L;
 
-	private float actualReading = 90;
-
 	// Paints
 	private Paint rimDefaultPaint = new Paint();
 	private Paint rimFillPaint = new Paint();
