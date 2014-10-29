@@ -55,12 +55,9 @@ public class CircularTimer extends View {
 	private boolean hasTimerEnded = false;
 
 	// Dynamics
-	private boolean dialInitialized = false;
+
 	private float currentValue = 360;
 	private float targetValue = 360;
-	private float fillVelocity = 0.0f;
-	private float fillAcceleration = 0.0f;
-	private long lastMoveTime = -1L;
 
 	// Paints
 	private Paint rimDefaultPaint = new Paint();
@@ -110,27 +107,19 @@ public class CircularTimer extends View {
 		Parcelable superState = bundle.getParcelable("superState");
 		super.onRestoreInstanceState(superState);
 
-		dialInitialized = bundle.getBoolean("dialInitialized");
 		currentValue = bundle.getFloat("currentValue");
 		targetValue = bundle.getFloat("targetValue");
-		fillVelocity = bundle.getFloat("fillVelocity");
-		fillAcceleration = bundle.getFloat("fillAcceleration");
-		lastMoveTime = bundle.getLong("lastMoveTime");
 		startTimeinMillis = bundle.getLong("startTimeInMillis");
 	}
 
 	@Override
 	protected Parcelable onSaveInstanceState() {
 		Parcelable superState = super.onSaveInstanceState();
-
 		Bundle state = new Bundle();
 		state.putParcelable("superState", superState);
-		state.putBoolean("dialInitialized", dialInitialized);
+		
 		state.putFloat("currentValue", currentValue);
 		state.putFloat("targetValue", targetValue);
-		state.putFloat("fillVelocity", fillVelocity);
-		state.putFloat("fillAcceleration", fillAcceleration);
-		state.putLong("lastMoveTime", lastMoveTime);
 		state.putLong("startTimeInMillis", startTimeinMillis);
 		return state;
 	}
