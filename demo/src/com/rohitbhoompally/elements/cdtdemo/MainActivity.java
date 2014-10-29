@@ -69,6 +69,10 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				ct.resetTimer();
 
+				// Switch stop and restart
+				stopBtn.setVisibility(View.VISIBLE);
+				restartBtn.setVisibility(View.GONE);
+
 				// Show start button
 				btn.setVisibility(View.VISIBLE);
 				btnWrapper.setVisibility(View.GONE);
