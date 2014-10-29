@@ -22,7 +22,7 @@
         app:rimInnerShadow="true"
         app:rimThickness="10dp"
         app:showMinutes="true"
-        app:timeInSeconds="5"
+        app:timeInSeconds="20"
         app:timeMinuteColor="#FFBAFF0A"
         app:timeSecondColor="#FFBAFF0A"
         app:timeUnitsTextColor="#AEAEAEAE" />

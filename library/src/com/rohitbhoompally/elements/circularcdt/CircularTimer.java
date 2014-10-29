@@ -391,4 +391,13 @@ public class CircularTimer extends View {
 	public void stopTimer() {
 		cdt.cancel();
 	}
+
+	public void resetTimer() {
+		if (cdt != null)
+			cdt.cancel();
+		targetValue = 360;
+		startTimeinMillis = startTime * 1000;
+		cdt = new CDT(startTimeinMillis, interval);
+		invalidate();
+	}
 }

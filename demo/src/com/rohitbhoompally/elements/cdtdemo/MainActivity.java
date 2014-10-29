@@ -36,6 +36,37 @@ public class MainActivity extends Activity {
 				btnWrapper.setVisibility(View.VISIBLE);
 			}
 		});
+
+		stopBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ct.stopTimer();
+			}
+		});
+
+		pauseBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		resetBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				ct.resetTimer();
+
+				// Show start button
+				btn.setVisibility(View.VISIBLE);
+				btnWrapper.setVisibility(View.GONE);
+			}
+		});
 	}
 
 	@Override
