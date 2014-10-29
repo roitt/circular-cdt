@@ -20,9 +20,8 @@ public class MainActivity extends Activity {
 		ct = (CircularTimer) findViewById(R.id.c_timer);
 		final Button btn = (Button) findViewById(R.id.start);
 		final LinearLayout btnWrapper = (LinearLayout) findViewById(R.id.btn_wrapper);
-		Button pauseBtn = (Button) findViewById(R.id.pause);
-		Button resumeBtn = (Button) findViewById(R.id.resume);
-		Button stopBtn = (Button) findViewById(R.id.stop);
+		final Button stopBtn = (Button) findViewById(R.id.stop);
+		final Button restartBtn = (Button) findViewById(R.id.restart);
 		Button resetBtn = (Button) findViewById(R.id.reset);
 		btn.setOnClickListener(new View.OnClickListener() {
 
@@ -43,15 +42,23 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				ct.stopTimer();
+
+				// Switch stop and restart
+				stopBtn.setVisibility(View.GONE);
+				restartBtn.setVisibility(View.VISIBLE);
 			}
 		});
 
-		pauseBtn.setOnClickListener(new View.OnClickListener() {
+		restartBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				ct.startTimer();
 
+				// Switch stop and restart
+				stopBtn.setVisibility(View.VISIBLE);
+				restartBtn.setVisibility(View.GONE);
 			}
 		});
 

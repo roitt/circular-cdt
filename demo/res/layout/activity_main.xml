@@ -34,40 +34,34 @@
         android:layout_alignParentBottom="true"
         android:animateLayoutChanges="true"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:weightSum="1.0" >
 
         <FrameLayout
             android:id="@+id/btn_pause_resume_wrapper"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3" >
+            android:layout_weight="0.5" >
 
             <Button
-                android:id="@+id/pause"
+                android:id="@+id/stop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/pause" />
+                android:text="@string/stop" />
 
             <Button
-                android:id="@+id/resume"
+                android:id="@+id/restart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/resume"
+                android:text="@string/restart"
                 android:visibility="gone" />
         </FrameLayout>
-
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:text="@string/stop" />
 
         <Button
             android:id="@+id/reset"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.5"
             android:text="@string/reset" />
     </LinearLayout>
 
