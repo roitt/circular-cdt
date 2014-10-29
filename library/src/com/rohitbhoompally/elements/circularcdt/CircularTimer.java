@@ -395,9 +395,20 @@ public class CircularTimer extends View {
 	public void resetTimer() {
 		if (cdt != null)
 			cdt.cancel();
+		cdt = null;
+		reInitializeTimerVariables();
+		cdt = new CDT(startTimeinMillis, intervalInMillis);
+		invalidate();
+	}
+
+	private void reInitializeTimerVariables() {
+		if (startTime > 3600)
+			startTime = 3600;
+
+		// Calculating angle per second
+		anglePerSecond = degrees / startTime;
 		targetValue = 360;
 		startTimeinMillis = startTime * 1000;
-		cdt = new CDT(startTimeinMillis, interval);
-		invalidate();
+		intervalInMillis = interval * 1000;
 	}
 }
