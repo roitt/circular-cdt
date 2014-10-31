@@ -117,7 +117,7 @@ public class CircularTimer extends View {
 		Parcelable superState = super.onSaveInstanceState();
 		Bundle state = new Bundle();
 		state.putParcelable("superState", superState);
-		
+
 		state.putFloat("currentValue", currentValue);
 		state.putFloat("targetValue", targetValue);
 		state.putLong("startTimeInMillis", startTimeinMillis);
