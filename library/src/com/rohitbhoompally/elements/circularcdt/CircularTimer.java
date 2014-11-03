@@ -387,7 +387,7 @@ public class CircularTimer extends View {
 	}
 
 	public void stopTimer() {
-		restartTimeInMillis = startTimeinMillis;
+		restartTimeInMillis = startTimeinMillis - 1000; // Pad the time.
 		cdt.cancel();
 	}
 
