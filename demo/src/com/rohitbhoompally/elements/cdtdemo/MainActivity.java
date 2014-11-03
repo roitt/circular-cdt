@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				ct.startTimer();
+				ct.restartTimer();
 
 				// Switch stop and restart
 				stopBtn.setVisibility(View.VISIBLE);

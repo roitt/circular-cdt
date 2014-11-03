@@ -54,6 +54,9 @@ public class CircularTimer extends View {
 	private float anglePerSecond = 1;
 	private boolean hasTimerEnded = false;
 
+	// Restart time
+	private long restartTimeInMillis = 0;
+
 	// Dynamics
 
 	private float currentValue = 360;
@@ -377,7 +380,14 @@ public class CircularTimer extends View {
 		cdt.start();
 	}
 
+	public void restartTimer() {
+		cdt = new CDT(restartTimeInMillis, intervalInMillis);
+		invalidate();
+		cdt.start();
+	}
+
 	public void stopTimer() {
+		restartTimeInMillis = startTimeinMillis;
 		cdt.cancel();
 	}
 
