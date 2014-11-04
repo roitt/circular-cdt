@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.rohitbhoompally.elements.circularcdt.CDTCircular;
 import com.rohitbhoompally.elements.circularcdt.CircularTimer;
@@ -20,20 +19,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ct = (CircularTimer) findViewById(R.id.c_timer);
-		ct.registerListener(new CDTCircular() {
-
-			@Override
-			public void onTick(long millis) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onFinish() {
-				// TODO Auto-generated method stub
-
-			}
-		});
 		final Button btn = (Button) findViewById(R.id.start);
 		final LinearLayout btnWrapper = (LinearLayout) findViewById(R.id.btn_wrapper);
 		final Button stopBtn = (Button) findViewById(R.id.stop);
@@ -51,24 +36,6 @@ public class MainActivity extends Activity {
 				btnWrapper.setVisibility(View.VISIBLE);
 			}
 		});
-
-		// new CDTCircular() {
-		//
-		// @Override
-		// public void onTick(long millis) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		//
-		// @Override
-		// public void onFinish() {
-		// // Reset all states
-		// stopBtn.setVisibility(View.VISIBLE);
-		// restartBtn.setVisibility(View.GONE);
-		// btn.setVisibility(View.VISIBLE);
-		// btnWrapper.setVisibility(View.GONE);
-		// }
-		// };
 
 		stopBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -102,6 +69,28 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				ct.resetTimer();
+
+				// Switch stop and restart
+				stopBtn.setVisibility(View.VISIBLE);
+				restartBtn.setVisibility(View.GONE);
+
+				// Show start button
+				btn.setVisibility(View.VISIBLE);
+				btnWrapper.setVisibility(View.GONE);
+			}
+		});
+
+		ct.registerListener(new CDTCircular() {
+
+			@Override
+			public void onTick(long millis) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onFinish() {
+				// TODO Auto-generated method stub
 
 				// Switch stop and restart
 				stopBtn.setVisibility(View.VISIBLE);
