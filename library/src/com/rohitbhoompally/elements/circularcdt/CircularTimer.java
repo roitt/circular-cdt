@@ -79,6 +79,12 @@ public class CircularTimer extends View {
 	private RectF minutesRect = new RectF();
 	private RectF secondsRect = new RectF();
 
+	CDTCircular cdtc;
+
+	public void registerListener(CDTCircular c) {
+		this.cdtc = c;
+	}
+
 	// Countdowntimer class implementation
 	public class CDT extends CountDownTimer {
 		public CDT(long startTime, long interval) {
@@ -93,6 +99,7 @@ public class CircularTimer extends View {
 			invalidate();
 			hasTimerEnded = true;
 			invalidate();
+			cdtc.onFinish();
 		}
 
 		@Override
@@ -101,6 +108,7 @@ public class CircularTimer extends View {
 			startTimeinMillis = millisUntilFinished;
 			targetValue = targetValue - anglePerSecond;
 			invalidate();
+			cdtc.onTick(millisUntilFinished);
 		}
 	}
 
