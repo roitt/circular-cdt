@@ -4,8 +4,9 @@ circular-countdowntimer
 A Simple Visual Countdown Timer
 
 ### USAGE
-1. Add the library as a dependency for your project.
-2. Include the CircularTimer in your layout file.
+1) Add the library as a dependency for your project.
+
+2) Include the CircularTimer in your layout file.
 
 ```
 <com.rohitbhoompally.elements.circularcdt.CircularTimer
@@ -26,14 +27,14 @@ A Simple Visual Countdown Timer
         app:timeUnitsTextColor="#AEAEAEAE" />
 ```
 
-3. Initilize the timer in your java file.
+3) Initialize the timer in your java file.
 
 ```
 static CircularTimer ct;
 ct = (CircularTimer) findViewById(R.id.c_timer);
 ```
 
-4. Use methods startTimer, resetTimer, stopTimer, restartTimer to control the timer.
+4) Use methods startTimer, resetTimer, stopTimer, restartTimer to control the timer.
 
 ```
 ct.startTimer();
@@ -42,7 +43,7 @@ ct.resetTimer();
 ct.restartTimer();
 ```
 
-5. If you want to listen to onTick(long millis) and onFinish() methods, use registerListener method.
+5) If you want to listen to onTick(long millis) and onFinish() methods, use registerListener method.
 
 ```
 ct.registerListener(new CDTCircular() {
