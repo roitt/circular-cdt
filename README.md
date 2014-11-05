@@ -62,5 +62,6 @@ ct.registerListener(new CDTCircular() {
 		});
 ```
 
+TODO: Handle onFinish states, and expose more library options.
 
 *Note: Still under development. Needs a lot of additional functionality, and bug fixes.
